@@ -10,7 +10,13 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
+#include "VertexBufferLayout.h"
 #include "Shader.h"
+#include "Texture.h"
+
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+
 
 int main(void)
 {
@@ -21,7 +27,7 @@ int main(void)
         return -1;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(960, 540, "Hello World", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -43,11 +49,11 @@ int main(void)
     
     {
         //Vertex buffer
-        float positions[8] = {
-            -0.5f, -0.5f,   //0
-            0.5f, -0.5f,    //1
-            0.5f, 0.5f,     //2
-            -0.5f, 0.5f,    //3
+        float positions[16] = {
+            100.0f, 100.0f, 0.0f, 0.0f,  //0
+            200.0f, 100.0f, 1.0f, 0.0f,   //1
+            200.0f, 200.0f, 1.0f, 1.0f,   //2
+            100.0f, 200.0f, 0.0f, 1.0f   //3
         };
 
         //Index buffer
@@ -56,32 +62,40 @@ int main(void)
             2, 3, 0
         };
 
+        GLCall(glEnable(GL_BLEND));
+        GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
         IndexBuffer ib(indices, 6);
-        VertexBuffer vb(positions, 8 * sizeof(float));
+        VertexBuffer vb(positions, 16 * sizeof(float));
         VertexBufferLayout layout;
         VertexArray va;
+        layout.Push<float>(2);
         layout.Push<float>(2);
         va.AddBuffer(vb, layout);
 
         Shader shader("res/shaders/Basic.shader");
         shader.Bind();
         shader.SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f, 1.0f);
-        shader.Unbind();
-        
-        vb.Unbind();
-        ib.Unbind();
 
+        glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
+        glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-100, 0, 0));
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(200, 200, 0));
+
+        glm::mat4 mvp = proj * view * model;
+
+        shader.SetUniformMat4f("u_MVP", mvp);
+
+        Texture texture("res/textures/image.png");
+        texture.Bind();
+        shader.SetUniform1i("u_Texture", 0);
+
+        Renderer renderer;
         while (!glfwWindowShouldClose(window))
         {
-            GLCall(glClear(GL_COLOR_BUFFER_BIT));
-        
             shader.Bind();
             shader.SetUniform4f("u_Color", 0.2f, 0.3f, 0.8f, 1.0f);
-            
-            va.Bind();
-            ib.Bind();
 
-            GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+            renderer.Draw(va, ib, shader);
        
             glfwSwapBuffers(window);
             glfwPollEvents();
