@@ -14,6 +14,7 @@ public:
 	~Texture();
 
 	void Bind(unsigned int slot = 0) const;
+	void BindUnit(unsigned int slot = 0) const;
 	void Unbind() const;
 
 };

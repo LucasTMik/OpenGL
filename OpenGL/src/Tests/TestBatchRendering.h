@@ -6,6 +6,7 @@
 #include "VertexArray.h"
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include <Texture.h>
 
 namespace Test {
 	class TestBatchRendering : public Test
@@ -23,5 +24,8 @@ namespace Test {
 		std::unique_ptr<VertexArray> m_VAO;
 		std::unique_ptr<IndexBuffer> m_IndexBuffer;
 		unsigned int m_IB;
+
+		std::unique_ptr<Texture> m_Texture1;
+		std::unique_ptr<Texture> m_Texture2;
 	};
 }

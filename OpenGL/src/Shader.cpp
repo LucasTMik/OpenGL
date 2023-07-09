@@ -171,25 +171,31 @@ void Shader::Unbind() const
 
 void Shader::SetUniform1i(const std::string& name, int value)
 {
-    GLint location = GetUniformLocation(name);
+    int location = GetUniformLocation(name);
     GLCall(glUniform1i(location, value));
+}
+
+void Shader::SetUniform1iv(const std::string& name, unsigned int count, int samplers[])
+{
+    int location = GetUniformLocation(name);
+    GLCall(glUniform1iv(location, count, samplers));
 }
 
 void Shader::SetUniform1f(const std::string& name, float v0)
 {
-    GLint location = GetUniformLocation(name);
+    int location = GetUniformLocation(name);
     GLCall(glUniform1f(location, v0));
 }
 
 void Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
 {
-    GLint location = GetUniformLocation(name);
+    int location = GetUniformLocation(name);
     GLCall(glUniform4f(location, v0, v1, v2, v3))
 }
 
 void Shader::SetUniformMat4f(const std::string& name, glm::mat4 matrix)
 {
-    GLint location = GetUniformLocation(name);
+    int location = GetUniformLocation(name);
     GLCall(glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]));
 }
 
