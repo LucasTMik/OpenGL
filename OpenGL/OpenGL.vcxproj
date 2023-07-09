@@ -138,6 +138,7 @@
     <ClCompile Include="src\IndexBuffer.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Tests\Test.cpp" />
+    <ClCompile Include="src\Tests\TestBatchRendering.cpp" />
     <ClCompile Include="src\Tests\TestClearColor.cpp" />
     <ClCompile Include="src\Tests\TestDefault.cpp" />
     <ClCompile Include="src\Tests\TestTexture2D.cpp" />
@@ -158,6 +159,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\Basic.shader" />
+    <None Include="res\shaders\shader.glsl.frag" />
+    <None Include="res\shaders\shader.glsl.vert" />
     <None Include="src\vendor\glm\detail\func_common.inl" />
     <None Include="src\vendor\glm\detail\func_common_simd.inl" />
     <None Include="src\vendor\glm\detail\func_exponential.inl" />
@@ -300,6 +303,7 @@
     <ClInclude Include="src\IndexBuffer.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Tests\Test.h" />
+    <ClInclude Include="src\Tests\TestBatchRendering.h" />
     <ClInclude Include="src\Tests\TestClearColor.h" />
     <ClInclude Include="src\Tests\TestDefault.h" />
     <ClInclude Include="src\Tests\TestTexture2D.h" />
